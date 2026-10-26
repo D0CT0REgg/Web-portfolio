@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio</title>
+<meta name="description" content="Portfolio de arte y videojuegos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: portada con dos "puertas" (Arte / Juegos) y una vista por sección, estilo galería limpia. */
+:root {
+  --bg: #F2F3F5;
+  --surface: #FFFFFF;
+  --ink: #15161A;
+  --muted: #646875;
+  --line: #D8DAE0;
+  --accent: #2F3BFF;
+  --accent-ink: #FFFFFF;
+  --ok: #1F7A4D;
+  --warn: #9A5B00;
+  --danger: #B3261E;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1013; --surface: #17181C; --ink: #EDEEF2; --muted: #9A9EAB; --line: #2A2C33;
+    --accent: #8A93FF; --accent-ink: #0F1013; --ok: #5FD08F; --warn: #E9B35A; --danger: #FF8A80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1013; --surface: #17181C; --ink: #EDEEF2; --muted: #9A9EAB; --line: #2A2C33;
+  --accent: #8A93FF; --accent-ink: #0F1013; --ok: #5FD08F; --warn: #E9B35A; --danger: #FF8A80;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 10; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { max-width: 1160px; margin: 0 auto; }
+.mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* Cabecera */
+.stick { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 11; background: var(--bg); }
+.top { border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-decoration: none; letter-spacing: -.01em; }
+.nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.nav a { text-decoration: none; font-size: 15px; color: var(--muted); padding-block: 4px; border-bottom: 2px solid transparent; }
+.nav a:hover { color: var(--ink); }
+.nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+.notice { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 10px 14px; margin-top: 20px; font-size: 14px; color: var(--muted); }
+.empty { color: var(--muted); padding-block: 24px 56px; }
+
+/* Portada */
+.hero { padding-block: 56px 36px; }
+.hero h1 {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -.03em; line-height: 1;
+  font-size: clamp(44px, 9vw, 104px); margin: 0 0 18px; text-wrap: balance;
+}
+.hero p { max-width: 52ch; margin: 0; color: var(--muted); font-size: 18px; }
+.doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding-bottom: 56px; }
+.door {
+  display: flex; flex-direction: column; gap: 18px; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 14px 22px;
+  transition: border-color .2s, transform .2s;
+}
+.door:hover { border-color: var(--accent); transform: translateY(-3px); }
+.door .preview { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; background: var(--bg); }
+.door .preview svg, .door .preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.door-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-inline: 6px; }
+.door h2 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); margin: 0; letter-spacing: -.02em; line-height: 1.05; }
+.door .arrow { font-size: 26px; color: var(--accent); transition: transform .2s; }
+.door:hover .arrow { transform: translateX(4px); }
+.door p { margin: 0; padding-inline: 6px; color: var(--muted); }
+
+/* Vistas */
+.view-head { padding-block: 44px 24px; display: flex; flex-direction: column; gap: 10px; }
+.view-head h1 { font-family: var(--font-display); font-size: clamp(36px, 6vw, 64px); letter-spacing: -.03em; line-height: 1.02; margin: 0; }
+.view-head p { margin: 0; max-width: 56ch; color: var(--muted); }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 24px; }
+.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 6px 14px; font-size: 14px; cursor: pointer; }
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* Galería de arte */
+.gallery { columns: 3 280px; column-gap: 20px; padding-bottom: 56px; }
+.piece { break-inside: avoid; margin: 0 0 24px; display: block; width: 100%; }
+.piece-open { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 0; cursor: zoom-in; }
+.piece .frame { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+.piece .frame svg, .piece .frame img { display: block; width: 100%; height: auto; transition: transform .35s; }
+.piece-open:hover .frame svg, .piece-open:hover .frame img { transform: scale(1.03); }
+.piece .cap { display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; font-size: 14px; }
+.piece .cap b { font-weight: 600; }
+.piece .cap span { color: var(--muted); font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+
+/* Visor */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 94%, transparent); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lb-img { width: min(100%, 900px); max-height: 72vh; display: flex; justify-content: center; min-height: 0; }
+.lb-img svg, .lb-img img { max-width: 100%; max-height: 72vh; width: auto; height: auto; border: 1px solid var(--line); border-radius: 3px; }
+.lb-cap { text-align: center; }
+.lb-cap b { font-family: var(--font-display); font-size: 22px; display: block; }
+.lb-bar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 4px; padding: 8px 16px; cursor: pointer; font-size: 14px; }
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.danger { color: var(--danger); }
+.btn.small { padding: 4px 10px; font-size: 13px; }
+
+/* Juegos */
+.projects { display: flex; flex-direction: column; padding-bottom: 56px; border-top: 1px solid var(--line); }
+.project { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 28px; padding-block: 28px; border-bottom: 1px solid var(--line); }
+.project .thumb { aspect-ratio: 4 / 3; border-radius: 3px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+.project .thumb svg, .project .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.project .body { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.project h3 { font-family: var(--font-display); font-size: clamp(24px, 3vw, 32px); margin: 0; letter-spacing: -.02em; line-height: 1.1; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.pill { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; border: 1px solid currentColor; }
+.pill.ok { color: var(--ok); }
+.pill.warn { color: var(--warn); }
+.pill.kind { color: var(--muted); }
+.pill.bad { color: var(--danger); }
+.estado-prev { margin: -4px 0 12px; min-height: 24px; }
+.project p { margin: 0; max-width: 60ch; color: var(--muted); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tags span { font-family: var(--font-mono); font-size: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 2px 8px; }
+.links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.links a { text-decoration: none; background: var(--accent); color: var(--accent-ink); padding: 8px 16px; border-radius: 4px; font-size: 14px; font-weight: 500; }
+.links a.sec { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.links span { color: var(--muted); font-size: 14px; padding-block: 8px; }
+
+/* Mini secciones del pie */
+.foot { border-top: 1px solid var(--line); padding-block: 40px 48px; }
+.minis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.mini { min-width: 0; }
+.mini.wide { grid-column: 1 / -1; }
+.mini h2 { font-family: var(--font-display); font-size: 24px; margin: 8px 0 14px; letter-spacing: -.02em; line-height: 1.1; }
+.mini p { margin: 0; color: var(--muted); max-width: 60ch; }
+.mini ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.mini li { display: flex; justify-content: space-between; gap: 16px; padding-block: 10px; border-bottom: 1px solid var(--line); }
+.mini li:first-child { border-top: 1px solid var(--line); }
+.mini li span { color: var(--muted); font-family: var(--font-mono); font-size: 13px; text-align: right; }
+.mini li a { text-decoration: none; color: var(--accent); font-family: var(--font-mono); font-size: 13px; }
+.mini li a:hover { text-decoration: underline; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq details:first-of-type { border-top: 1px solid var(--line); }
+.faq summary { cursor: pointer; padding-block: 14px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--accent); font-family: var(--font-mono); }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding-bottom: 16px; }
+.copy { margin-top: 36px; }
+
+/* Editor (solo el dueño) */
+.editbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.editbar .bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-block: 8px; }
+.editbar .spacer { flex: 1 1 auto; }
+.editbar .status { font-size: 13px; color: var(--muted); }
+.editbar .status.dirty { color: var(--warn); font-weight: 600; }
+.editbar .status.ok { color: var(--ok); }
+.editbar .status.err { color: var(--danger); }
+.tools { display: flex; gap: 6px; flex-wrap: wrap; padding-top: 8px; }
+.admin-row { display: flex; gap: 10px; flex-wrap: wrap; padding-bottom: 20px; }
+.dropzone-on { outline: 2px dashed var(--accent); outline-offset: -8px; }
+
+.overlay { position: fixed; inset: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 80%, transparent); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.dialog { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 22px; width: 100%; max-width: 560px; margin-block: auto; }
+.dialog.wide { max-width: 760px; }
+.dialog h2 { font-family: var(--font-display); font-size: 24px; margin: 0 0 16px; letter-spacing: -.02em; }
+.dialog h3 { font-family: var(--font-display); font-size: 18px; margin: 24px 0 8px; }
+.dialog p { margin: 0 0 12px; }
+.dlg-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 20px; }
+.form-err { color: var(--danger); font-size: 14px; margin: 12px 0 0 !important; }
+.fld { display: block; margin-bottom: 14px; min-width: 0; }
+.fld > .mono { display: block; margin-bottom: 4px; }
+.fld input:not([type="checkbox"]):not([type="file"]), .fld textarea, .fld select, .row-ed input, .row-ed textarea {
+  width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px;
+}
+.fld textarea, .row-ed textarea { resize: vertical; min-height: 64px; }
+.fld-inline { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.hint { color: var(--muted); font-size: 14px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.link-ed { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 4px; }
+.rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.row-ed { display: flex; gap: 8px; align-items: flex-start; }
+.row-ed > input, .row-ed > textarea { flex: 1 1 0; min-width: 0; }
+.row-btns { display: flex; gap: 4px; flex: none; }
+.pend { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; padding-block: 14px; border-top: 1px solid var(--line); }
+.pend img { width: 110px; height: 110px; object-fit: cover; border: 1px solid var(--line); border-radius: 3px; }
+
+@media (max-width: 760px) {
+  .doors { grid-template-columns: minmax(0, 1fr); }
+  .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .minis { grid-template-columns: minmax(0, 1fr); }
+  .hero { padding-block: 36px 24px; }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .pend { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="stick">
+  <div class="editbar" id="editbar" hidden></div>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#" id="brand"></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#arte" data-nav="arte">Arte</a>
+        <a href="#juegos" data-nav="juegos">Juegos</a>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<main class="wrap" id="app"></main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="minis" id="minis"></div>
+    <p class="copy mono" id="foot-year"></p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Vista ampliada" hidden>
+  <div class="lb-img" id="lb-img"></div>
+  <div class="lb-cap" id="lb-cap"></div>
+  <div class="lb-bar">
+    <button class="btn" id="lb-prev" type="button">Anterior</button>
+    <button class="btn" id="lb-next" type="button">Siguiente</button>
+    <button class="btn" id="lb-close" type="button">Cerrar</button>
+  </div>
+</div>
+
+<input type="file" id="file-art" accept="image/*" multiple hidden>
+
+<script>
+"use strict";
+/* Todo el contenido sale de datos.json. Los textos se insertan siempre como texto (nunca como HTML);
+   la única excepción son los dibujos de ejemplo, que se generan solo a partir de números. */
+
+const $ = id => document.getElementById(id);
+const REL = "imagenes/";
+const GH = "https://api.github.com";
+const CFG_KEY = "portfolio-editor";
+
+/* ========= Utilidades ========= */
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  let value;
+  for (const [k, v] of Object.entries(attrs || {})){
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k === "text") el.textContent = v;
+    else if (k === "value") value = v;
+    else if (k === "checked") el.checked = true;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c);
+  if (value !== undefined) el.value = value;
+  return el;
+}
+const str = v => (typeof v === "string" ? v : v == null ? "" : String(v));
+const arr = v => (Array.isArray(v) ? v : []);
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const safeUrl = u => { try { const x = new URL(str(u).trim()); return x.protocol === "https:" || x.protocol === "http:" ? x.href : ""; } catch { return ""; } };
+const safeImg = p => (/^imagenes\/[\w\-./]+$/.test(str(p)) && !str(p).includes("..") ? p : "");
+function hashSeed(s){ let n = 7; for (const c of str(s)) n = (n * 31 + c.charCodeAt(0)) >>> 0; return n; }
+function svgNode(markup){ const t = document.createElement("template"); t.innerHTML = markup; return t.content.firstChild; }
+
+/* ========= Datos ========= */
+function normMini(m, key){
+  if (!m || typeof m !== "object") return null;
+  if (key === "sobreMi") return str(m.texto).trim() ? { titulo: str(m.titulo) || "Sobre mí", texto: str(m.texto) } : null;
+  const items = arr(m.items).map(i => [str(arr(i)[0]), str(arr(i)[1])]).filter(i => i[0] || i[1]);
+  return items.length ? { titulo: str(m.titulo), items } : null;
+}
+function normalize(d){
+  d = d && typeof d === "object" ? d : {};
+  const s = d.sitio || {}, mi = d.minis || {}, minis = {};
+  for (const k of ["sobreMi", "herramientas", "faq", "redes"]){ const v = normMini(mi[k], k); if (v) minis[k] = v; }
+  return {
+    sitio: { nombre: str(s.nombre), frase: str(s.frase), mostrarAvisoEjemplo: !!s.mostrarAvisoEjemplo },
+    categoriasArte: arr(d.categoriasArte).map(str).filter(Boolean),
+    arte: arr(d.arte).map(a => {
+      a = a || {};
+      const o = { id: str(a.id) || uid("a"), titulo: str(a.titulo), anio: Number(a.anio) || new Date().getFullYear(), tecnica: str(a.tecnica),
+        categoria: str(a.categoria), imagen: str(a.imagen), ancho: Number(a.ancho) || 0, alto: Number(a.alto) || 0 };
+      if (a.seed) o.seed = Number(a.seed);
+      return o;
+    }),
+    juegos: arr(d.juegos).map(j => {
+      j = j || {};
+      const o = { id: str(j.id) || uid("j"), titulo: str(j.titulo), genero: str(j.genero), estado: str(j.estado), descripcion: str(j.descripcion),
+        tecnologias: arr(j.tecnologias).map(str).filter(Boolean), portada: str(j.portada),
+        enlaces: arr(j.enlaces).map(e => ({ texto: str(e && e.texto), url: str(e && e.url), secundario: !!(e && e.secundario) })).filter(e => e.texto) };
+      if (j.seed) o.seed = Number(j.seed);
+      return o;
+    }),
+    minis
+  };
+}
+
+let DATA = normalize({});
+let loadError = false;
+let cfg = loadCfg();
+let editing = false, asVisitor = false, dirty = false, saving = false;
+let barMsg = { text: "", kind: "" };
+let loadedSha = null;
+const pending = {};          // ruta -> Blob (imágenes aún sin guardar en GitHub)
+const localUrl = {};         // ruta -> URL local para mostrar la imagen aunque Pages no haya actualizado
+const repoFiles = new Set(); // imágenes que ya existen en el repositorio
+const removed = new Set();   // imágenes del repositorio que hay que borrar al guardar
+let artFilter = "Todo", lbList = [], lbIdx = 0;
+
+const isEdit = () => editing && !asVisitor;
+const imgSrc = p => localUrl[p] || p;
+function referenced(){
+  const s = new Set();
+  DATA.arte.forEach(a => a.imagen && s.add(a.imagen));
+  DATA.juegos.forEach(j => j.portada && s.add(j.portada));
+  return s;
+}
+
+/* ========= Dibujos de ejemplo ========= */
+function rng(seed){ let s = seed >>> 0; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
+function artSvg(seed, W, H){
+  const r = rng(seed), hue = Math.floor(r() * 360);
+  let out = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dibujo de ejemplo"><rect width="${W}" height="${H}" fill="hsl(${hue} 28% 86%)"/>`;
+  const n = 4 + Math.floor(r() * 3);
+  for (let i = 0; i < n; i++){
+    const col = `hsl(${(hue + i * 37 + Math.floor(r() * 30)) % 360} ${38 + Math.floor(r() * 25)}% ${32 + Math.floor(r() * 38)}%)`;
+    const k = Math.floor(r() * 3), cx = r() * W, cy = r() * H, s = (0.18 + r() * 0.38) * Math.min(W, H);
+    if (k === 0) out += `<circle cx="${cx.toFixed(0)}" cy="${cy.toFixed(0)}" r="${s.toFixed(0)}" fill="${col}"/>`;
+    else if (k === 1) out += `<rect x="${(cx - s / 2).toFixed(0)}" y="${(cy - s / 2).toFixed(0)}" width="${s.toFixed(0)}" height="${(s * (0.5 + r())).toFixed(0)}" fill="${col}"/>`;
+    else out += `<path d="M${(cx - s).toFixed(0)} ${cy.toFixed(0)}a${s.toFixed(0)} ${s.toFixed(0)} 0 0 1 ${(s * 2).toFixed(0)} 0z" fill="${col}"/>`;
+  }
+  return out + `</svg>`;
+}
+function pixelSvg(seed){
+  const r = rng(seed), cols = 12, rows = 9, hue = Math.floor(r() * 360);
+  let out = `<svg viewBox="0 0 ${cols * 10} ${rows * 10}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Imagen de ejemplo" shape-rendering="crispEdges" preserveAspectRatio="xMidYMid slice"><rect width="${cols * 10}" height="${rows * 10}" fill="hsl(${hue} 25% 84%)"/>`;
+  for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++){
+    if (r() < 0.38) out += `<rect x="${x * 10}" y="${y * 10}" width="10" height="10" fill="hsl(${(hue + Math.floor(r() * 3) * 50) % 360} 45% ${30 + Math.floor(r() * 35)}%)"/>`;
+  }
+  return out + `</svg>`;
+}
+function artVisual(p){
+  const src = safeImg(p.imagen);
+  if (src){
+    const img = h("img", { src: imgSrc(src), alt: p.titulo, loading: "lazy" });
+    if (p.ancho > 0 && p.alto > 0){ img.setAttribute("width", p.ancho); img.setAttribute("height", p.alto); }
+    return img;
+  }
+  return svgNode(artSvg(p.seed || hashSeed(p.id), p.ancho > 0 ? p.ancho : 400, p.alto > 0 ? p.alto : 300));
+}
+function gameVisual(j){
+  const src = safeImg(j.portada);
+  return src ? h("img", { src: imgSrc(src), alt: j.titulo, loading: "lazy" }) : svgNode(pixelSvg(j.seed || hashSeed(j.id)));
+}
+
+/* ========= Vistas ========= */
+const app = $("app");
+const notice = () => DATA.sitio.mostrarAvisoEjemplo ? h("div", { class: "notice", text: "Contenido de ejemplo. Se sustituirá por obras y juegos reales." }) : null;
+const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+
+function home(){
+  const nA = DATA.arte.length, nJ = DATA.juegos.length;
+  const a0 = DATA.arte[0], j0 = DATA.juegos[0];
+  app.replaceChildren(
+    h("section", { class: "hero" },
+      h("h1", { text: DATA.sitio.nombre || "Portfolio" }),
+      DATA.sitio.frase && h("p", { text: DATA.sitio.frase }),
+      notice()),
+    h("section", { class: "doors", "aria-label": "Secciones" },
+      h("a", { class: "door", href: "#arte" },
+        h("div", { class: "preview" }, a0 ? artVisual(a0) : svgNode(artSvg(131, 400, 300))),
+        h("div", { class: "door-meta" }, h("h2", { text: "Arte" }), h("span", { class: "arrow", "aria-hidden": "true", text: "→" })),
+        h("p", { text: nA ? `${plural(nA, "obra", "obras")}${DATA.categoriasArte.length ? ": " + DATA.categoriasArte.join(", ").toLowerCase() : ""}.` : "Aún no hay obras." })),
+      h("a", { class: "door", href: "#juegos" },
+        h("div", { class: "preview" }, j0 ? gameVisual(j0) : svgNode(pixelSvg(137))),
+        h("div", { class: "door-meta" }, h("h2", { text: "Juegos" }), h("span", { class: "arrow", "aria-hidden": "true", text: "→" })),
+        h("p", { text: nJ ? `${plural(nJ, "juego creado", "juegos creados")}, de prototipos a proyectos terminados.` : "Aún no hay juegos." }))));
+}
+
+function tools(item, list, visible, onEdit, what){
+  const del = async () => {
+    if (!await confirmBox(`¿Borrar «${item.titulo || "sin título"}»? Podrás deshacerlo cerrando la página sin guardar.`, "Borrar", true)) return;
+    dropImage(item.imagen || item.portada);
+    list.splice(list.indexOf(item), 1);
+    touch();
+  };
+  const mv = d => { const t = visible[visible.indexOf(item) + d]; if (!t) return; const i = list.indexOf(item), j = list.indexOf(t); list[i] = t; list[j] = item; touch(); };
+  return h("div", { class: "tools" },
+    h("button", { class: "btn small", type: "button", onclick: onEdit, "aria-label": `Editar ${what}` }, "Editar"),
+    h("button", { class: "btn small", type: "button", onclick: () => mv(-1), "aria-label": "Mover antes" }, "↑"),
+    h("button", { class: "btn small", type: "button", onclick: () => mv(1), "aria-label": "Mover después" }, "↓"),
+    h("button", { class: "btn small danger", type: "button", onclick: del, "aria-label": `Borrar ${what}` }, "Borrar"));
+}
+
+function arte(){
+  const cats = ["Todo", ...DATA.categoriasArte];
+  if (!cats.includes(artFilter)) artFilter = "Todo";
+  const list = DATA.arte.filter(p => artFilter === "Todo" || p.categoria === artFilter);
+  lbList = list;
+  app.replaceChildren(
+    h("section", { class: "view-head" },
+      h("span", { class: "mono", text: plural(list.length, "obra", "obras") }),
+      h("h1", { text: "Arte" }),
+      h("p", { text: "Ilustraciones, pixel art, personajes y bocetos." }),
+      notice()),
+    isEdit() && h("div", { class: "admin-row" },
+      h("button", { class: "btn", type: "button", onclick: () => $("file-art").click() }, "Subir imágenes"),
+      h("button", { class: "btn", type: "button", onclick: editCategories }, "Editar categorías")),
+    h("div", { class: "filters", role: "group", "aria-label": "Filtrar por categoría" },
+      cats.map(c => h("button", { class: "chip", type: "button", "aria-pressed": String(c === artFilter), onclick: () => { artFilter = c; arte(); } }, c))),
+    list.length ? h("section", { class: "gallery" }, list.map((p, i) =>
+      h("div", { class: "piece" },
+        h("button", { class: "piece-open", type: "button", "aria-label": `Ampliar ${p.titulo}`, onclick: () => openLb(i) },
+          h("span", { class: "frame" }, artVisual(p)),
+          h("span", { class: "cap" }, h("b", { text: p.titulo }), h("span", { text: [p.tecnica, p.anio].filter(Boolean).join(" · ") }))),
+        isEdit() && tools(p, DATA.arte, list, () => editArt(p), "la obra"))))
+    : h("p", { class: "empty", text: isEdit() ? "No hay obras en esta vista. Usa «Subir imágenes» o arrastra imágenes a la página." : "Todavía no hay obras." }));
+}
+
+function juegos(){
+  const list = DATA.juegos;
+  app.replaceChildren(
+    h("section", { class: "view-head" },
+      h("span", { class: "mono", text: plural(list.length, "juego", "juegos") }),
+      h("h1", { text: "Juegos" }),
+      h("p", { text: "Juegos que he programado y diseñado, de la idea al producto jugable." }),
+      notice()),
+    isEdit() && h("div", { class: "admin-row" }, h("button", { class: "btn", type: "button", onclick: () => editGame(null) }, "Añadir juego")),
+    list.length ? h("section", { class: "projects" }, list.map(j =>
+      h("article", { class: "project" },
+        h("div", { class: "thumb" }, gameVisual(j)),
+        h("div", { class: "body" },
+          h("div", { class: "row" },
+            j.genero && h("span", { class: "pill kind", text: j.genero }),
+            j.estado && h("span", { class: "pill " + estadoClass(j.estado), text: j.estado })),
+          h("h3", { text: j.titulo }),
+          j.descripcion && h("p", { text: j.descripcion }),
+          j.tecnologias.length && h("div", { class: "tags" }, j.tecnologias.map(t => h("span", { text: t }))),
+          j.enlaces.length && h("div", { class: "links" }, j.enlaces.map(l => {
+            const u = safeUrl(l.url);
+            return u ? h("a", { class: l.secundario ? "sec" : "", href: u, target: "_blank", rel: "noopener" }, l.texto) : h("span", { text: `${l.texto}: enlace por añadir` });
+          })),
+          isEdit() && tools(j, DATA.juegos, DATA.juegos, () => editGame(j), "el juego")))))
+    : h("p", { class: "empty", text: isEdit() ? "No hay juegos. Pulsa «Añadir juego»." : "Todavía no hay juegos." }));
+}
+
+function minis(){
+  const m = DATA.minis, out = [];
+  if (m.sobreMi) out.push(h("section", { class: "mini" }, h("span", { class: "mono", text: "Quién soy" }), h("h2", { text: m.sobreMi.titulo }), h("p", { text: m.sobreMi.texto })));
+  if (m.herramientas) out.push(h("section", { class: "mini" }, h("span", { class: "mono", text: "Cómo trabajo" }), h("h2", { text: m.herramientas.titulo || "Herramientas" }),
+    h("ul", {}, m.herramientas.items.map(([a, b]) => h("li", {}, a, h("span", { text: b }))))));
+  if (m.faq) out.push(h("section", { class: "mini faq wide" }, h("span", { class: "mono", text: "Dudas habituales" }), h("h2", { text: m.faq.titulo || "Preguntas frecuentes" }),
+    m.faq.items.map(([q, a]) => h("details", {}, h("summary", { text: q }), h("p", { text: a })))));
+  if (m.redes) out.push(h("section", { class: "mini" }, h("span", { class: "mono", text: "Dónde encontrarme" }), h("h2", { text: m.redes.titulo || "Redes" }),
+    h("ul", {}, m.redes.items.map(([n, href]) => { const u = safeUrl(href); return h("li", {}, n, u ? h("a", { href: u, target: "_blank", rel: "noopener" }, "Abrir") : h("span", { text: "enlace por añadir" })); }))));
+  $("minis").replaceChildren(...out);
+}
+
+function chrome(){
+  const n = DATA.sitio.nombre || "Portfolio";
+  $("brand").textContent = n;
+  document.title = n;
+  $("foot-year").textContent = `© ${new Date().getFullYear()} ${DATA.sitio.nombre}`.trim();
+  minis();
+}
+
+/* ========= Visor ========= */
+function openLb(i){ lbIdx = i; showLb(); $("lb").hidden = false; $("lb-close").focus(); }
+function showLb(){
+  const p = lbList[lbIdx]; if (!p) return;
+  $("lb-img").replaceChildren(artVisual(p));
+  $("lb-cap").replaceChildren(h("b", { text: p.titulo }), h("span", { class: "mono", text: [p.categoria, p.tecnica, p.anio].filter(Boolean).join(" · ") }));
+}
+function stepLb(d){ if (!lbList.length) return; lbIdx = (lbIdx + d + lbList.length) % lbList.length; showLb(); }
+function closeLb(){ $("lb").hidden = true; }
+$("lb-close").addEventListener("click", closeLb);
+$("lb-prev").addEventListener("click", () => stepLb(-1));
+$("lb-next").addEventListener("click", () => stepLb(1));
+$("lb").addEventListener("click", e => { if (e.target === $("lb")) closeLb(); });
+document.addEventListener("keydown", e => {
+  if (modalStack.length){ if (e.key === "Escape") modalStack[modalStack.length - 1].close(); return; }
+  if ($("lb").hidden) return;
+  if (e.key === "Escape") closeLb();
+  if (e.key === "ArrowLeft") stepLb(-1);
+  if (e.key === "ArrowRight") stepLb(1);
+});
+
+/* ========= Navegación por hash: #arte, #juegos y vacío para la portada ========= */
+function route(scroll = true){
+  const hs = location.hash.replace("#", "");
+  if (hs === "editor"){ history.replaceState(null, "", location.pathname + location.search); openSetup(); return route(false); }
+  closeLb();
+  document.querySelectorAll("[data-nav]").forEach(a => a.removeAttribute("aria-current"));
+  if (loadError){ app.replaceChildren(h("p", { class: "empty", text: "No se han podido cargar los datos (datos.json). Si abres el archivo directamente desde el disco, el navegador lo bloquea: usa GitHub Pages o un servidor local." })); return; }
+  if (hs === "arte"){ arte(); document.querySelector('[data-nav="arte"]').setAttribute("aria-current", "page"); }
+  else if (hs === "juegos"){ juegos(); document.querySelector('[data-nav="juegos"]').setAttribute("aria-current", "page"); }
+  else home();
+  if (scroll) window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", () => route());
+function render(){ chrome(); route(false); }
+
+/* ========= Ventanas, formularios y utilidades del editor ========= */
+let modalStack = [];
+function openModal(title, body, actions = [], { wide = false, onClose } = {}){
+  const prev = document.activeElement;
+  const err = h("p", { class: "form-err", role: "alert", hidden: true });
+  let ov;
+  const api = { close(){ ov.remove(); modalStack = modalStack.filter(m => m !== api); if (prev && prev.focus) prev.focus(); if (onClose) onClose(); }, err(msg){ err.textContent = msg; err.hidden = false; } };
+  const dlg = h("div", { class: "dialog" + (wide ? " wide" : ""), role: "dialog", "aria-modal": "true", "aria-label": title, tabindex: "-1" },
+    h("h2", { text: title }), body, err,
+    h("div", { class: "dlg-actions" }, actions.map(a => h("button", { type: "button", class: "btn" + (a.primary ? " primary" : "") + (a.danger ? " danger" : ""),
+      onclick: async e => {
+        const b = e.currentTarget; b.disabled = true; err.hidden = true;
+        try {
+          const r = a.onClick ? await a.onClick() : undefined;
+          if (typeof r === "string"){ api.err(r); return; }
+          if (r !== false) api.close();
+        } finally { b.disabled = false; }
+      } }, a.label))));
+  ov = h("div", { class: "overlay" }, dlg);
+  modalStack.push(api);
+  document.body.append(ov);
+  (dlg.querySelector("input:not([type=file]),textarea,select") || dlg).focus();
+  return api;
+}
+function confirmBox(msg, ok = "Aceptar", danger = false){
+  return new Promise(res => openModal("Confirmar", h("p", { text: msg }),
+    [{ label: "Cancelar" }, { label: ok, primary: !danger, danger, onClick: () => { res(true); } }], { onClose: () => res(false) }));
+}
+const fld = (label, el) => h("label", { class: "fld" }, h("span", { class: "mono", text: label }), el);
+const field = (label, value, type = "text", extra = {}) => { const el = h("input", { type, value: value ?? "", ...extra }); return { el, node: fld(label, el) }; };
+
+function rowsEditor(rows, { cols = 1, area = false, ph = [] } = {}){
+  const list = h("div", { class: "rows" }), meta = new Map();
+  const b = (t, aria, fn) => h("button", { type: "button", class: "btn small", "aria-label": aria, onclick: fn }, t);
+  function add(vals, orig){
+    const inputs = vals.map((v, k) => h(area && cols > 1 && k === cols - 1 ? "textarea" : "input", { value: v, placeholder: ph[k] || "", "aria-label": ph[k] || "Campo", rows: 2 }));
+    const row = h("div", { class: "row-ed" }, inputs, h("span", { class: "row-btns" },
+      b("↑", "Subir", () => { const p = row.previousElementSibling; if (p) list.insertBefore(row, p); }),
+      b("↓", "Bajar", () => { const n = row.nextElementSibling; if (n) list.insertBefore(n, row); }),
+      b("✕", "Quitar", () => row.remove())));
+    meta.set(row, { inputs, orig });
+    list.append(row);
+  }
+  rows.forEach(r => add(r.vals, r.orig));
+  return {
+    node: h("div", {}, list, h("button", { type: "button", class: "btn small", onclick: () => add(Array(cols).fill(""), null) }, "Añadir")),
+    get: () => [...list.children].map(r => ({ vals: meta.get(r).inputs.map(i => i.value.trim()), orig: meta.get(r).orig })).filter(x => x.vals.some(Boolean))
+  };
+}
+
+/* ========= Imágenes ========= */
+function toBlob(canvas, type, q){ return new Promise(res => canvas.toBlob(res, type, q)); }
+async function compress(file, max){
+  if (!file.type.startsWith("image/")) throw new Error(`«${file.name}» no es una imagen.`);
+  let bmp;
+  try { bmp = await createImageBitmap(file); } catch { throw new Error(`No he podido leer «${file.name}».`); }
+  const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const w = Math.max(1, Math.round(bmp.width * k)), hh = Math.max(1, Math.round(bmp.height * k));
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = hh;
+  cv.getContext("2d").drawImage(bmp, 0, 0, w, hh);
+  let blob = await toBlob(cv, "image/webp", 0.85), ext = "webp";
+  if (!blob || blob.type !== "image/webp"){ blob = await toBlob(cv, "image/jpeg", 0.88); ext = "jpg"; }
+  if (!blob) throw new Error(`No he podido comprimir «${file.name}».`);
+  return { blob, w, h: hh, ext, url: URL.createObjectURL(blob) };
+}
+function addPending(folder, c){
+  const path = `${REL}${folder}/${uid("i")}.${c.ext}`;
+  pending[path] = c.blob; localUrl[path] = c.url;
+  return path;
+}
+function dropImage(path){
+  if (!path) return;
+  if (pending[path]) delete pending[path];
+  else if (repoFiles.has(path)) removed.add(path);
+}
+
+/* ========= Edición de obras ========= */
+function catSelect(value){
+  const opts = ["", ...DATA.categoriasArte];
+  if (value && !opts.includes(value)) opts.push(value);
+  return h("select", { value }, opts.map(c => h("option", { value: c }, c || "(sin categoría)")));
+}
+function editArt(p){
+  const t = field("Título", p.titulo), y = field("Año", p.anio, "number", { min: 1900, max: 2100 }), tec = field("Técnica", p.tecnica);
+  const cat = catSelect(p.categoria), file = h("input", { type: "file", accept: "image/*" });
+  openModal("Editar obra", h("div", {}, t.node, h("div", { class: "grid2" }, y.node, tec.node), fld("Categoría", cat), fld("Cambiar imagen (opcional)", file)), [
+    { label: "Cancelar" },
+    { label: "Aplicar", primary: true, onClick: async () => {
+      if (!t.el.value.trim()) return "Escribe un título.";
+      let c = null;
+      if (file.files[0]){ try { c = await compress(file.files[0], 1600); } catch (e) { return e.message; } }
+      p.titulo = t.el.value.trim(); p.anio = Number(y.el.value) || p.anio; p.tecnica = tec.el.value.trim(); p.categoria = cat.value;
+      if (c){ dropImage(p.imagen); p.imagen = addPending("arte", c); p.ancho = c.w; p.alto = c.h; }
+      touch();
+    } }]);
+}
+async function uploadArt(files){
+  files = [...files].filter(f => f.type.startsWith("image/"));
+  if (!files.length) return;
+  const done = [], bad = [];
+  setBar("Preparando imágenes…", "");
+  for (const f of files){ try { done.push({ f, c: await compress(f, 1600) }); } catch (e) { bad.push(e.message); } }
+  setBar("", "");
+  if (!done.length){ openModal("Subir imágenes", h("p", { text: bad.join(" ") || "No hay imágenes válidas." }), [{ label: "Cerrar", primary: true }]); return; }
+  const year = new Date().getFullYear();
+  const cards = done.map(d => ({
+    d, t: h("input", { type: "text", value: d.f.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ") }),
+    y: h("input", { type: "number", value: year, min: 1900, max: 2100 }), tec: h("input", { type: "text" }), cat: catSelect(artFilter !== "Todo" ? artFilter : DATA.categoriasArte[0] || "")
+  }));
+  const body = h("div", {}, bad.length && h("p", { class: "form-err", text: bad.join(" ") }),
+    cards.map(c => h("div", { class: "pend" }, h("img", { src: c.d.c.url, alt: "" }),
+      h("div", {}, fld("Título", c.t), h("div", { class: "grid2" }, fld("Año", c.y), fld("Técnica", c.tec)), fld("Categoría", c.cat)))));
+  openModal(`Datos de ${plural(done.length, "imagen", "imágenes")}`, body, [
+    { label: "Cancelar" },
+    { label: "Añadir a Arte", primary: true, onClick: () => {
+      if (cards.some(c => !c.t.value.trim())) return "Todas las obras necesitan título.";
+      cards.forEach(c => DATA.arte.push({ id: uid("a"), titulo: c.t.value.trim(), anio: Number(c.y.value) || year, tecnica: c.tec.value.trim(),
+        categoria: c.cat.value, imagen: addPending("arte", c.d.c), ancho: c.d.c.w, alto: c.d.c.h }));
+      touch();
+    } }], { wide: true, onClose: () => cards.forEach(c => { if (!Object.values(localUrl).includes(c.d.c.url)) URL.revokeObjectURL(c.d.c.url); }) });
+}
+function editCategories(){
+  const ed = rowsEditor(DATA.categoriasArte.map(c => ({ vals: [c], orig: c })), { ph: ["Nombre de la categoría"] });
+  openModal("Categorías de Arte", h("div", {}, h("p", { class: "hint", text: "Si cambias un nombre, las obras que lo usan se actualizan. Si quitas una categoría, sus obras quedan sin categoría." }), ed.node), [
+    { label: "Cancelar" },
+    { label: "Aplicar", primary: true, onClick: () => {
+      const rows = ed.get(), names = rows.map(r => r.vals[0]);
+      if (new Set(names).size !== names.length) return "Hay categorías repetidas.";
+      const map = new Map(rows.filter(r => r.orig).map(r => [r.orig, r.vals[0]]));
+      DATA.arte.forEach(a => { if (a.categoria) a.categoria = map.get(a.categoria) || ""; });
+      DATA.categoriasArte = names;
+      if (artFilter !== "Todo") artFilter = map.get(artFilter) || "Todo";
+      touch();
+    } }]);
+}
+
+/* ========= Edición de juegos ========= */
+function estadoClass(e){
+  const s = String(e || "").trim().toLowerCase();
+  if (s === "privado" || s === "no jugable") return "bad";
+  return s === "en desarrollo" || s === "prototipo" ? "warn" : "ok";
+}
+function editGame(j){
+  const nuevo = !j;
+  const g = j || { id: uid("j"), titulo: "", genero: "", estado: "Jugable", descripcion: "", tecnologias: [], portada: "", enlaces: [] };
+  const t = field("Título", g.titulo), ge = field("Género", g.genero, "text", { placeholder: "Plataformas, Arcade, Puzle…" });
+  const es = field("Estado", g.estado, "text", { list: "estados", placeholder: "Jugable, En desarrollo…" });
+  const ds = h("textarea", { rows: 4, value: g.descripcion });
+  const tc = field("Tecnologías (separadas por comas)", g.tecnologias.join(", "));
+  const file = h("input", { type: "file", accept: "image/*" });
+  const links = [0, 1, 2].map(i => { const e = g.enlaces[i] || {}; return { t: field("Texto del botón", e.texto || ""), u: field("Dirección (https://…)", e.url || "", "url"), s: h("input", { type: "checkbox", checked: !!e.secundario }) }; });
+  const prev = h("div", { class: "estado-prev" });
+  const updPrev = () => { const v = es.el.value.trim(); prev.replaceChildren(...(v ? [h("span", { class: "pill " + estadoClass(v), text: v })] : [])); };
+  es.el.addEventListener("input", updPrev); updPrev();
+  const body = h("div", {}, t.node, h("div", { class: "grid2" }, ge.node, es.node), prev,
+    h("datalist", { id: "estados" }, ["Jugable", "En desarrollo", "Prototipo", "Game jam", "Privado", "No jugable"].map(x => h("option", { value: x }))),
+    fld("Descripción", ds), tc.node, fld(g.portada ? "Cambiar portada (opcional)" : "Imagen de portada", file),
+    links.map((l, i) => h("div", { class: "link-ed" }, h("span", { class: "mono", text: `Enlace ${i + 1}` }), h("div", { class: "grid2" }, l.t.node, l.u.node),
+      h("label", { class: "fld-inline" }, l.s, "Estilo secundario (botón con borde)"))));
+  openModal(nuevo ? "Añadir juego" : "Editar juego", body, [
+    { label: "Cancelar" },
+    { label: nuevo ? "Añadir" : "Aplicar", primary: true, onClick: async () => {
+      if (!t.el.value.trim()) return "Escribe un título.";
+      const enlaces = [];
+      for (const l of links){
+        const tx = l.t.el.value.trim(), u = l.u.el.value.trim();
+        if (!tx){ if (u) return "Un enlace tiene dirección pero no texto."; continue; }
+        if (u && !safeUrl(u)) return `La dirección de «${tx}» debe empezar por http:// o https://`;
+        enlaces.push({ texto: tx, url: u ? safeUrl(u) : "", secundario: l.s.checked });
+      }
+      let c = null;
+      if (file.files[0]){ try { c = await compress(file.files[0], 1200); } catch (e) { return e.message; } }
+      Object.assign(g, { titulo: t.el.value.trim(), genero: ge.el.value.trim(), estado: es.el.value.trim(), descripcion: ds.value.trim(),
+        tecnologias: tc.el.value.split(",").map(x => x.trim()).filter(Boolean), enlaces });
+      if (c){ dropImage(g.portada); g.portada = addPending("juegos", c); }
+      if (nuevo) DATA.juegos.push(g);
+      touch();
+    } }], { wide: true });
+}
+
+/* ========= Ajustes ========= */
+function openSettings(){
+  const m = DATA.minis, pairs = x => (x ? x.items : []).map(i => ({ vals: i, orig: null }));
+  const nombre = field("Nombre", DATA.sitio.nombre), frase = field("Frase de presentación", DATA.sitio.frase);
+  const sTit = field("Título", m.sobreMi ? m.sobreMi.titulo : "Sobre mí"), sTxt = h("textarea", { rows: 4, value: m.sobreMi ? m.sobreMi.texto : "" });
+  const hTit = field("Título", m.herramientas ? m.herramientas.titulo : "Herramientas"), hEd = rowsEditor(pairs(m.herramientas), { cols: 2, ph: ["Qué", "Con qué"] });
+  const fTit = field("Título", m.faq ? m.faq.titulo : "Preguntas frecuentes"), fEd = rowsEditor(pairs(m.faq), { cols: 2, area: true, ph: ["Pregunta", "Respuesta"] });
+  const rTit = field("Título", m.redes ? m.redes.titulo : "Redes"), rEd = rowsEditor(pairs(m.redes), { cols: 2, ph: ["Nombre (itch.io…)", "Enlace https://…"] });
+  const body = h("div", {}, nombre.node, frase.node,
+    h("h3", { text: "Sobre mí" }), sTit.node, fld("Texto", sTxt),
+    h("h3", { text: "Herramientas" }), hTit.node, hEd.node,
+    h("h3", { text: "Preguntas frecuentes" }), fTit.node, fEd.node,
+    h("h3", { text: "Redes" }), rTit.node, rEd.node,
+    h("p", { class: "hint", text: "Una sección sin contenido desaparece de la web." }),
+    h("h3", { text: "Cuenta del editor" }),
+    h("div", { class: "row" },
+      h("button", { type: "button", class: "btn", onclick: () => { openSetup(); } }, "Cambiar token o repositorio"),
+      h("button", { type: "button", class: "btn danger", onclick: async () => {
+        if (!await confirmBox("Se borrará el token de este navegador. La web seguirá funcionando, pero no podrás editar hasta volver a pegarlo.", "Cerrar sesión de editor", true)) return;
+        if (dirty && !await confirmBox("Hay cambios sin guardar que se perderán. ¿Seguir?", "Seguir", true)) return;
+        try { localStorage.removeItem(CFG_KEY); } catch {}
+        dirty = false; location.reload();
+      } }, "Cerrar sesión de editor")));
+  const setMini = (k, titulo, items) => { const it = items.map(r => r.vals); if (it.length) DATA.minis[k] = { titulo: titulo.trim(), items: it }; else delete DATA.minis[k]; };
+  openModal("Ajustes", body, [
+    { label: "Cancelar" },
+    { label: "Aplicar", primary: true, onClick: () => {
+      const bad = rEd.get().find(r => r.vals[1] && !safeUrl(r.vals[1]));
+      if (bad) return `El enlace de «${bad.vals[0]}» debe empezar por http:// o https://`;
+      DATA.sitio.nombre = nombre.el.value.trim(); DATA.sitio.frase = frase.el.value.trim();
+      if (sTxt.value.trim()) DATA.minis.sobreMi = { titulo: sTit.el.value.trim() || "Sobre mí", texto: sTxt.value.trim() }; else delete DATA.minis.sobreMi;
+      setMini("herramientas", hTit.el.value, hEd.get()); setMini("faq", fTit.el.value, fEd.get());
+      setMini("redes", rTit.el.value, rEd.get().map(r => ({ vals: [r.vals[0], r.vals[1] ? safeUrl(r.vals[1]) : ""] })));
+      touch();
+    } }], { wide: true });
+}
+
+async function removeExamples(){
+  if (!await confirmBox("Se borrarán todas las obras, los juegos y las categorías, y desaparecerá el aviso de «contenido de ejemplo». Los textos de Sobre mí, Herramientas, Preguntas frecuentes y Redes se conservan (revísalos en Ajustes). No se guarda nada hasta que pulses «Guardar cambios».", "Quitar ejemplos", true)) return;
+  [...DATA.arte.map(a => a.imagen), ...DATA.juegos.map(j => j.portada)].forEach(dropImage);
+  DATA.arte = []; DATA.juegos = []; DATA.categoriasArte = []; DATA.sitio.mostrarAvisoEjemplo = false; artFilter = "Todo";
+  touch();
+}
+
+/* ========= Barra de edición ========= */
+function setBar(text, kind){ barMsg = { text, kind }; renderBar(); }
+function touch(){ dirty = true; barMsg = { text: "", kind: "" }; renderBar(); render(); }
+function renderBar(){
+  const bar = $("editbar");
+  if (!cfg.token){ bar.hidden = true; bar.replaceChildren(); return; }
+  bar.hidden = false;
+  const btn = (label, fn, cls = "", dis = false) => h("button", { type: "button", class: "btn small " + cls, onclick: fn, disabled: dis }, label);
+  let inner;
+  if (asVisitor){
+    inner = [h("span", { class: "mono", text: "Vista de visitante" }), h("span", { class: "spacer" }), btn("Volver al editor", () => { asVisitor = false; renderBar(); render(); })];
+  } else if (!editing){
+    inner = [h("span", { class: "status " + (barMsg.kind || ""), text: barMsg.text || "Cargando editor…" }), h("span", { class: "spacer" }),
+      btn("Reintentar", enterEditor), btn("Configurar", openSetup)];
+  } else {
+    const status = barMsg.text ? barMsg : dirty ? { text: "● Cambios sin guardar", kind: "dirty" } : { text: "Todo guardado", kind: "" };
+    inner = [h("strong", { text: "Editor" }), btn("Subir imágenes", () => { location.hash = "arte"; $("file-art").click(); }), btn("Ajustes", openSettings),
+      btn("Ver como visitante", () => { asVisitor = true; renderBar(); render(); }), btn("Quitar ejemplos", removeExamples),
+      h("span", { class: "spacer" }), h("span", { class: "status " + status.kind, role: "status", text: status.text }),
+      btn(saving ? "Guardando…" : "Guardar cambios", save, "primary", saving || !dirty)];
+  }
+  bar.replaceChildren(h("div", { class: "wrap bar" }, inner));
+}
+window.addEventListener("beforeunload", e => { if (dirty){ e.preventDefault(); e.returnValue = ""; } });
+
+$("file-art").addEventListener("change", e => { const f = e.target.files; if (f && f.length) uploadArt(f); e.target.value = ""; });
+window.addEventListener("dragover", e => { if (isEdit() && e.dataTransfer && [...e.dataTransfer.types].includes("Files")){ e.preventDefault(); document.body.classList.add("dropzone-on"); } });
+window.addEventListener("dragleave", e => { if (!e.relatedTarget) document.body.classList.remove("dropzone-on"); });
+window.addEventListener("drop", e => {
+  document.body.classList.remove("dropzone-on");
+  if (!isEdit() || !e.dataTransfer || !e.dataTransfer.files.length) return;
+  e.preventDefault(); uploadArt(e.dataTransfer.files);
+});
+
+/* ========= GitHub ========= */
+function loadCfg(){ try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch { return {}; } }
+function saveCfg(c){ try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); return true; } catch { return false; } }
+
+class GhError extends Error {
+  constructor(status, msg){ super(msg || ""); this.status = status; }
+  friendly(){
+    switch (this.status){
+      case 0: return "No hay conexión con GitHub. Comprueba tu internet y vuelve a intentarlo.";
+      case 401: return "El token no es válido o ha caducado. Crea uno nuevo y pégalo en Ajustes → «Cambiar token o repositorio».";
+      case 403: return "GitHub rechaza la petición: el token no tiene permiso de escritura en «Contents» o has hecho demasiadas peticiones. " + this.message;
+      case 404: return "No encuentro el repositorio, la rama o el archivo. Revisa usuario, repositorio y rama, y que el token tenga acceso a ese repositorio.";
+      case 409: case 422: return "GitHub no ha aceptado el cambio (el repositorio cambió mientras guardabas). Vuelve a pulsar «Guardar cambios». " + this.message;
+      default: return `Error de GitHub (${this.status}). ${this.message}`;
+    }
+  }
+}
+async function gh(path, opts = {}, c = cfg){
+  let res;
+  try {
+    res = await fetch(GH + path, { cache: "no-store", ...opts, headers: { Accept: "application/vnd.github+json", Authorization: "Bearer " + c.token, "X-GitHub-Api-Version": "2022-11-28", ...(opts.body ? { "Content-Type": "application/json" } : {}) } });
+  } catch { throw new GhError(0); }
+  if (!res.ok){ const j = await res.json().catch(() => ({})); throw new GhError(res.status, j.message); }
+  return res.json();
+}
+const repoPath = (c = cfg) => `/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}`;
+const b64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(blob); });
+function decodeB64(s){ const bin = atob(s.replace(/\s/g, "")); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
+
+async function fetchRemoteData(c = cfg){
+  const f = await gh(`${repoPath(c)}/contents/datos.json?ref=${encodeURIComponent(c.branch)}`, {}, c);
+  return { data: normalize(JSON.parse(decodeB64(f.content))), sha: f.sha };
+}
+async function enterEditor(){
+  setBar("Conectando con GitHub…", "");
+  try {
+    const r = await fetchRemoteData();
+    DATA = r.data; loadedSha = r.sha; editing = true; dirty = false; loadError = false;
+    repoFiles.clear(); removed.clear(); referenced().forEach(p => repoFiles.add(p));
+    barMsg = { text: "", kind: "" };
+  } catch (e) {
+    editing = false;
+    barMsg = { text: e instanceof GhError ? e.friendly() : "No he podido leer datos.json del repositorio.", kind: "err" };
+  }
+  renderBar(); render();
+}
+
+function openSetup(){
+  const host = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "";
+  const repoGuess = host ? location.pathname.split("/").filter(Boolean)[0] || "" : "";
+  const tk = field("Token de GitHub (fine-grained)", "", "password", { autocomplete: "off", placeholder: cfg.token ? "Ya hay uno guardado; pega otro para cambiarlo" : "github_pat_…" });
+  const ow = field("Usuario de GitHub", cfg.owner || host), rp = field("Repositorio", cfg.repo || repoGuess), br = field("Rama", cfg.branch || "main");
+  openModal("Configurar el editor", h("div", {},
+    h("p", { class: "hint", text: "Se hace una sola vez. El token se guarda solo en este navegador y nunca se sube a la web. Debe ser un token fino limitado a este repositorio con permiso «Contents: Read and write»." }),
+    tk.node, h("div", { class: "grid2" }, ow.node, rp.node), br.node), [
+    { label: "Cancelar" },
+    { label: "Validar y guardar", primary: true, onClick: async () => {
+      const c = { token: tk.el.value.trim() || cfg.token || "", owner: ow.el.value.trim(), repo: rp.el.value.trim(), branch: br.el.value.trim() || "main" };
+      if (!c.token) return "Pega el token.";
+      if (!c.owner || !c.repo) return "Indica usuario y repositorio.";
+      try {
+        const info = await gh(repoPath(c), {}, c);
+        if (info.permissions && info.permissions.push === false) return "El token puede leer el repositorio, pero no escribir. Dale permiso «Contents: Read and write».";
+        await gh(`${repoPath(c)}/contents/datos.json?ref=${encodeURIComponent(c.branch)}`, {}, c);
+      } catch (e) { return e instanceof GhError ? e.friendly() : "Error inesperado al validar."; }
+      if (!saveCfg(c)) return "Este navegador no permite guardar el token (¿ventana privada o datos bloqueados?).";
+      cfg = c; enterEditor();
+    } }]);
+}
+
+/* ========= Guardado: un único commit con datos.json e imágenes ========= */
+async function save(){
+  if (saving || !dirty) return;
+  saving = true; setBar("Guardando…", "");
+  const p = repoPath(), br = encodeURIComponent(cfg.branch);
+  try {
+    const head = (await gh(`${p}/git/ref/heads/${br}`)).object.sha;
+    const cur = await gh(`${p}/contents/datos.json?ref=${br}`);
+    if (cur.sha !== loadedSha){
+      saving = false; setBar("El contenido cambió en GitHub desde que lo cargaste.", "err");
+      if (await confirmBox("Los datos del repositorio han cambiado desde que abriste el editor (¿otro dispositivo o pestaña?). Para no pisarlos, puedes cargar la versión de GitHub, pero se perderán tus cambios locales.", "Cargar la de GitHub", true)){ dirty = false; await enterEditor(); }
+      return;
+    }
+    const baseTree = (await gh(`${p}/git/commits/${head}`)).tree.sha;
+    const tree = [], paths = Object.keys(pending).filter(x => referenced().has(x));
+    for (const path of paths){
+      const blob = await gh(`${p}/git/blobs`, { method: "POST", body: JSON.stringify({ content: await b64(pending[path]), encoding: "base64" }) });
+      tree.push({ path, mode: "100644", type: "blob", sha: blob.sha });
+    }
+    const json = JSON.stringify(DATA, null, 2) + "\n";
+    const jb = await gh(`${p}/git/blobs`, { method: "POST", body: JSON.stringify({ content: json, encoding: "utf-8" }) });
+    tree.push({ path: "datos.json", mode: "100644", type: "blob", sha: jb.sha });
+    const live = referenced();
+    for (const path of removed) if (!live.has(path)) tree.push({ path, mode: "100644", type: "blob", sha: null });
+    const nt = await gh(`${p}/git/trees`, { method: "POST", body: JSON.stringify({ base_tree: baseTree, tree }) });
+    const cm = await gh(`${p}/git/commits`, { method: "POST", body: JSON.stringify({ message: "Actualizar portfolio desde el editor", tree: nt.sha, parents: [head] }) });
+    await gh(`${p}/git/refs/heads/${br}`, { method: "PATCH", body: JSON.stringify({ sha: cm.sha, force: false }) });
+    loadedSha = jb.sha; dirty = false;
+    for (const path of paths) delete pending[path];
+    removed.clear(); repoFiles.clear(); referenced().forEach(x => repoFiles.add(x));
+    saving = false;
+    setBar("Guardado. GitHub Pages tarda alrededor de un minuto en mostrar los cambios a los visitantes.", "ok");
+  } catch (e) {
+    saving = false;
+    setBar(e instanceof GhError ? e.friendly() : "Error inesperado al guardar. Tus cambios siguen aquí sin guardar.", "err");
+  }
+}
+
+/* ========= Arranque ========= */
+async function init(){
+  renderBar();
+  try {
+    const res = await fetch("datos.json?" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error(res.status);
+    DATA = normalize(await res.json());
+  } catch { loadError = true; }
+  render();
+  if (cfg.token) enterEditor();
+}
+init();
+</script>
+</body>
+</html>
