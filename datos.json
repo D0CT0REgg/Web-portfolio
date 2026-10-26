@@ -49,18 +49,17 @@
   ],
   "juegos": [
     {
-      "id": "jmvpbjykmch82",
+      "id": "jmvpbxiibumlq",
       "titulo": "Flores's Basics",
       "genero": "Terror",
       "estado": "Privado",
       "descripcion": "Una parodia de Flores's Basics en 2D top view, pixel art.",
       "tecnologias": [
         "Godot",
-        "Pixel Art",
         "GDScript",
         "2025"
       ],
-      "portada": "imagenes/juegos/imvpbnpoe6as6.webp",
+      "portada": "imagenes/juegos/imvpbybwv94br.webp",
       "enlaces": []
     },
     {
