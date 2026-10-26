@@ -5,7 +5,48 @@
     "mostrarAvisoEjemplo": false
   },
   "categoriasArte": [],
-  "arte": [],
+  "arte": [
+    {
+      "id": "amvpbb74j2r5s",
+      "titulo": "Link",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvpbb74jj3be.webp",
+      "ancho": 1063,
+      "alto": 752
+    },
+    {
+      "id": "amvpbbnl9td9t",
+      "titulo": "Zelda",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvpbbnl9fscu.webp",
+      "ancho": 894,
+      "alto": 894
+    },
+    {
+      "id": "amvpbbwqe0ve3",
+      "titulo": "Peach",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvpbbwqes43q.webp",
+      "ancho": 543,
+      "alto": 768
+    },
+    {
+      "id": "amvpbc5fo177m",
+      "titulo": "Nimona",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvpbc5fojyjj.webp",
+      "ancho": 894,
+      "alto": 894
+    }
+  ],
   "juegos": [],
   "minis": {
     "sobreMi": {
