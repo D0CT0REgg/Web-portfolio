@@ -2,55 +2,78 @@
   "sitio": {
     "nombre": "Tu nombre",
     "frase": "Artista y creador de videojuegos.",
-    "mostrarAvisoEjemplo": true
+    "mostrarAvisoEjemplo": false
   },
-  "categoriasArte": ["Ilustración", "Pixel art", "Personajes", "Bocetos"],
-  "arte": [
-    { "id": "a1", "titulo": "Marea de noviembre", "anio": 2026, "tecnica": "Digital", "categoria": "Ilustración", "imagen": "", "ancho": 400, "alto": 500, "seed": 11 },
-    { "id": "a2", "titulo": "Mapa del faro", "anio": 2026, "tecnica": "Pixel art", "categoria": "Pixel art", "imagen": "", "ancho": 100, "alto": 100, "seed": 23 },
-    { "id": "a3", "titulo": "Cartero de humo", "anio": 2025, "tecnica": "Digital", "categoria": "Personajes", "imagen": "", "ancho": 300, "alto": 400, "seed": 35 },
-    { "id": "a4", "titulo": "Estudio de manos", "anio": 2025, "tecnica": "Lápiz", "categoria": "Bocetos", "imagen": "", "ancho": 500, "alto": 400, "seed": 47 },
-    { "id": "a5", "titulo": "Calle sin nombre", "anio": 2025, "tecnica": "Pixel art", "categoria": "Pixel art", "imagen": "", "ancho": 400, "alto": 300, "seed": 59 },
-    { "id": "a6", "titulo": "La hermana mayor", "anio": 2024, "tecnica": "Digital", "categoria": "Personajes", "imagen": "", "ancho": 400, "alto": 500, "seed": 71 },
-    { "id": "a7", "titulo": "Tres sillas", "anio": 2024, "tecnica": "Tinta", "categoria": "Bocetos", "imagen": "", "ancho": 100, "alto": 100, "seed": 83 },
-    { "id": "a8", "titulo": "Campo en agosto", "anio": 2024, "tecnica": "Digital", "categoria": "Ilustración", "imagen": "", "ancho": 500, "alto": 300, "seed": 97 },
-    { "id": "a9", "titulo": "Guardián del almacén", "anio": 2023, "tecnica": "Digital", "categoria": "Personajes", "imagen": "", "ancho": 300, "alto": 400, "seed": 109 }
-  ],
-  "juegos": [
-    {
-      "id": "j1", "titulo": "Faro Lento", "genero": "Plataformas", "estado": "Jugable",
-      "descripcion": "Plataformas contemplativo sobre un guardián que enciende un faro cada noche. Una mecánica nueva por nivel.",
-      "tecnologias": ["Godot", "Pixel art", "PC"], "portada": "", "seed": 5,
-      "enlaces": [{ "texto": "Jugar en itch.io", "url": "", "secundario": false }, { "texto": "Código", "url": "", "secundario": true }]
-    },
-    {
-      "id": "j2", "titulo": "Turno de noche", "genero": "Survivors-like", "estado": "En desarrollo",
-      "descripcion": "Supervivencia 2D en vista cenital con oleadas cada vez más difíciles, en un solo escenario.",
-      "tecnologias": ["Godot", "Pixel art", "Acción"], "portada": "", "seed": 17,
-      "enlaces": [{ "texto": "Ver el devlog", "url": "", "secundario": false }]
-    },
-    {
-      "id": "j3", "titulo": "Cantina lunar", "genero": "Arcade", "estado": "Game jam",
-      "descripcion": "Juego de reflejos hecho en 48 horas: sirves platos a clientes aliens antes de que se acabe la paciencia.",
-      "tecnologias": ["Godot", "Game jam", "Arcade"], "portada": "", "seed": 29,
-      "enlaces": [{ "texto": "Jugar en itch.io", "url": "", "secundario": false }]
-    },
-    {
-      "id": "j4", "titulo": "Eco", "genero": "Puzle", "estado": "Prototipo",
-      "descripcion": "Puzle de sonido en el que cada eco abre un camino distinto por la cueva.",
-      "tecnologias": ["Godot", "Puzle"], "portada": "", "seed": 41,
-      "enlaces": [{ "texto": "Ver el prototipo", "url": "", "secundario": false }]
-    }
-  ],
+  "categoriasArte": [],
+  "arte": [],
+  "juegos": [],
   "minis": {
-    "sobreMi": { "titulo": "Sobre mí", "texto": "Dibujo y programo desde hace años. Hago videojuegos, casi siempre en solitario y con arte propio." },
-    "herramientas": { "titulo": "Herramientas", "items": [["Motor de juegos", "Godot"], ["Dibujo", "Krita, Paint"], ["Código", "GDScript, JavaScript"], ["Música", "LMMS"]] },
-    "faq": { "titulo": "Preguntas frecuentes", "items": [
-      ["¿Los juegos son gratis?", "Los de ejemplo sí. Cada ficha indica dónde se puede jugar y si tiene precio."],
-      ["¿Haces todo tú solo?", "Sí: programación, arte, diseño y sonido, salvo que la ficha diga lo contrario."],
-      ["¿Aceptas encargos?", "Por ahora no."],
-      ["¿Puedo usar tus dibujos?", "No sin permiso. Todas las obras tienen los derechos reservados."]
-    ] },
-    "redes": { "titulo": "Redes", "items": [["itch.io", ""], ["GitHub", ""], ["Instagram", ""], ["YouTube", ""]] }
+    "sobreMi": {
+      "titulo": "Sobre mí",
+      "texto": "Dibujo y programo desde hace años. Hago videojuegos, casi siempre en solitario y con arte propio."
+    },
+    "herramientas": {
+      "titulo": "Herramientas",
+      "items": [
+        [
+          "Motor de juegos",
+          "Godot"
+        ],
+        [
+          "Dibujo",
+          "Krita, Paint"
+        ],
+        [
+          "Código",
+          "GDScript, JavaScript"
+        ],
+        [
+          "Música",
+          "LMMS"
+        ]
+      ]
+    },
+    "faq": {
+      "titulo": "Preguntas frecuentes",
+      "items": [
+        [
+          "¿Los juegos son gratis?",
+          "Los de ejemplo sí. Cada ficha indica dónde se puede jugar y si tiene precio."
+        ],
+        [
+          "¿Haces todo tú solo?",
+          "Sí: programación, arte, diseño y sonido, salvo que la ficha diga lo contrario."
+        ],
+        [
+          "¿Aceptas encargos?",
+          "Por ahora no."
+        ],
+        [
+          "¿Puedo usar tus dibujos?",
+          "No sin permiso. Todas las obras tienen los derechos reservados."
+        ]
+      ]
+    },
+    "redes": {
+      "titulo": "Redes",
+      "items": [
+        [
+          "itch.io",
+          ""
+        ],
+        [
+          "GitHub",
+          ""
+        ],
+        [
+          "Instagram",
+          ""
+        ],
+        [
+          "YouTube",
+          ""
+        ]
+      ]
+    }
   }
 }
