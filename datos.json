@@ -47,7 +47,35 @@
       "alto": 894
     }
   ],
-  "juegos": [],
+  "juegos": [
+    {
+      "id": "jmvpbjykmch82",
+      "titulo": "Flores's Basics",
+      "genero": "Terror",
+      "estado": "Privado",
+      "descripcion": "Una parodia de Flores's Basics en 2D top view, pixel art.",
+      "tecnologias": [
+        "Godot",
+        "Pixel Art",
+        "GDScript"
+      ],
+      "portada": "imagenes/juegos/imvpbnpoe6as6.webp",
+      "enlaces": []
+    },
+    {
+      "id": "jmvpbny0qsa0x",
+      "titulo": "Las Mezclitas de Pastor",
+      "genero": "Simulación",
+      "estado": "En desarrollo",
+      "descripcion": "Parodia de Bartender The Right Mix, donde en vez de crear cócteles tienes que mezclar ingredientes de química.",
+      "tecnologias": [
+        "Godot",
+        "GDScript"
+      ],
+      "portada": "imagenes/juegos/imvpbre6wd7qo.webp",
+      "enlaces": []
+    }
+  ],
   "minis": {
     "sobreMi": {
       "titulo": "Sobre mí",
