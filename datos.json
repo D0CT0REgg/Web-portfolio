@@ -1,7 +1,7 @@
 {
   "sitio": {
-    "nombre": "Tu nombre",
-    "frase": "Artista y creador de videojuegos.",
+    "nombre": "Doctor Egg",
+    "frase": "Artista y creadora de videojuegos.",
     "mostrarAvisoEjemplo": false
   },
   "categoriasArte": [],
@@ -51,7 +51,7 @@
   "minis": {
     "sobreMi": {
       "titulo": "Sobre mí",
-      "texto": "Dibujo y programo desde hace años. Hago videojuegos, casi siempre en solitario y con arte propio."
+      "texto": "Artista aficionada que dibuja desde hace años. Empecé el desarrollo de videojuegos en Godot en 2025."
     },
     "herramientas": {
       "titulo": "Herramientas",
@@ -62,15 +62,15 @@
         ],
         [
           "Dibujo",
-          "Krita, Paint"
+          "Krita"
         ],
         [
           "Código",
-          "GDScript, JavaScript"
+          "GDScript"
         ],
         [
           "Música",
-          "LMMS"
+          "Musescore"
         ]
       ]
     },
@@ -79,7 +79,7 @@
       "items": [
         [
           "¿Los juegos son gratis?",
-          "Los de ejemplo sí. Cada ficha indica dónde se puede jugar y si tiene precio."
+          "Normalmente sí, aunque hay excepciones."
         ],
         [
           "¿Haces todo tú solo?",
@@ -87,11 +87,11 @@
         ],
         [
           "¿Aceptas encargos?",
-          "Por ahora no."
+          "No, aunque sí de amigos o cercanos"
         ],
         [
           "¿Puedo usar tus dibujos?",
-          "No sin permiso. Todas las obras tienen los derechos reservados."
+          "Sí, siempre que se dé crédito claro al autor. No está permitido usarlo para entrenar a IAs generativas."
         ]
       ]
     },
@@ -100,19 +100,15 @@
       "items": [
         [
           "itch.io",
-          ""
+          "https://d0ct0r-egg.itch.io/"
         ],
         [
-          "GitHub",
-          ""
+          "DeviantArt",
+          "https://www.deviantart.com/d0ct0regg"
         ],
         [
-          "Instagram",
-          ""
-        ],
-        [
-          "YouTube",
-          ""
+          "Pinterest",
+          "https://es.pinterest.com/D0CT0R_Egg/"
         ]
       ]
     }
