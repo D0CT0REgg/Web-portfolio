@@ -57,7 +57,8 @@
       "tecnologias": [
         "Godot",
         "Pixel Art",
-        "GDScript"
+        "GDScript",
+        "2025"
       ],
       "portada": "imagenes/juegos/imvpbnpoe6as6.webp",
       "enlaces": []
@@ -70,7 +71,8 @@
       "descripcion": "Parodia de Bartender The Right Mix, donde en vez de crear cócteles tienes que mezclar ingredientes de química.",
       "tecnologias": [
         "Godot",
-        "GDScript"
+        "GDScript",
+        "2026"
       ],
       "portada": "imagenes/juegos/imvpbre6wd7qo.webp",
       "enlaces": []
