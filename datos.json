@@ -7,6 +7,16 @@
   "categoriasArte": [],
   "arte": [
     {
+      "id": "amvz2o7zld9al",
+      "titulo": "Delegados",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvz2o7zlhef7.webp",
+      "ancho": 1600,
+      "alto": 900
+    },
+    {
       "id": "amvpbb74j2r5s",
       "titulo": "Link",
       "anio": 2026,
@@ -64,6 +74,16 @@
       "categoria": "",
       "imagen": "imagenes/arte/imvvlnoeqi5gz.webp",
       "ancho": 1600,
+      "alto": 1600
+    },
+    {
+      "id": "amvz2p11skv1l",
+      "titulo": "Wallpaper",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imvz2p11spupi.webp",
+      "ancho": 739,
       "alto": 1600
     },
     {
