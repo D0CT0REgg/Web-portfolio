@@ -105,6 +105,16 @@
       "imagen": "imagenes/arte/imwb5fui312i9.webp",
       "ancho": 512,
       "alto": 512
+    },
+    {
+      "id": "amwfj17whxhyj",
+      "titulo": "Diseño para camiseta de Breaking Bad",
+      "anio": 2026,
+      "tecnica": "Digital",
+      "categoria": "",
+      "imagen": "imagenes/arte/imwfj17wiappe.webp",
+      "ancho": 1131,
+      "alto": 1600
     }
   ],
   "juegos": [
